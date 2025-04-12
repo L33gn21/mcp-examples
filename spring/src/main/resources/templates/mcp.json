@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "mcp-test": {
+      "command": "python",
+      "args": [
+        "_mcp_server.py"
+      ]
+    }
+  }
+}
