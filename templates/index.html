@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        #chat-box { width: 400px; height: 300px; border: 1px solid #ddd; overflow-y: auto; padding: 10px; margin: auto; text-align: left; }
+        .user { color: blue; }
+        .bot { color: green; }
+    </style>
+</head>
+<body>
+    <h2>FastAPI 비동기 채팅</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="메시지를 입력하세요" />
+    <button onclick="sendMessage()">전송</button>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("user-input");
+            const message = input.value.trim();
+            if (!message) return;
+
+            // 채팅 박스에 사용자 메시지 추가
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<p class="user"><strong>사용자:</strong> ${message}</p>`;
+
+            // API 요청 보내기
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
+
+            // 응답 받기
+            const data = await response.json();
+            chatBox.innerHTML += `<p class="bot"><strong>봇:</strong> ${data.response}</p>`;
+
+            // 입력창 초기화 및 스크롤 이동
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
